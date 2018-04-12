@@ -1,0 +1,11 @@
+resolver: lts-10.5
+
+packages:
+- A
+- B
+- C
+- D
+- E
+
+extra-deps:
+- asset-bundle-0.1.0.0

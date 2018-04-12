@@ -1,0 +1,52 @@
+* asset-bundle-demo
+  This repo contains a demo of the [[http://hackage.haskell.org/package/asset-bundle][asset-bundle]] library which provides build time functions which combine your project's executable, it's
+  assets (config files, database files etc.) along with those of it's dependencies into a portable zip.
+
+  This multi-project repo consists of five projects, A, B, C, D and E. The dependency chart shows how they are interconnected:
+  #+BEGIN_EXAMPLE
+          A*
+         / \
+        B   C*
+       /     \
+      D*      E*
+  #+END_EXAMPLE
+  A is the main project which depends on B and C, C depends on E and so on.
+
+  The asterisk next to the project indicates that it has some local data that it references at runtime. The asset is just a text file that, for example in the case of D, contains the string "D's assets" which ~D~ will read and print to console when called from ~A~.
+
+  To build and run this repo do:
+  #+BEGIN_EXAMPLE
+  > stack build
+  > stack exec A-exe # or stack exec A-exe.exe on Windows
+  #+END_EXAMPLE
+
+  This should print:
+  #+BEGIN_EXAMPLE
+  A's assets
+
+  D's assets.
+
+  C's assets.
+
+  E's assets.
+
+  #+END_EXAMPLE
+
+  Also if all goes well deep inside your ~.stack-work~ library you should find ~A-exe_bundled.zip~. On my machine it was ~.stack-work/install/x86_64-linux-tinfo6/lts-10.5/8.2.2/bin/A-exe_bundled.zip~ which should unzip into the tree:
+  #+BEGIN_EXAMPLE
+  A-exe_bundled
+  ├── A-0.1.0.0
+  │   └── A.txt
+  ├── A-exe
+  ├── C-0.1.0.0
+  │   └── C.txt
+  ├── D-0.1.0.0
+  │   └── D.txt
+  ├── E-0.1.0.0
+  │   └── E.txt
+  └── run.sh
+  #+END_EXAMPLE
+
+  Note that there is no ~B-0.1.0.0~ directory because [[http://hackage.haskell.org/package/asset-bundle][asset-bundle]] filters out dependencies that don't have any associated data.
+
+  You should be able to move that directory anywhere and invoking ~run.sh~ (or ~run.bat~ on Windows) should be the same as running ~stack exec A-exe~.

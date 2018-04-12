@@ -1,0 +1,15 @@
+name:                E
+version:             0.1.0.0
+github:              "deech/E"
+license:             BSD3
+author:              "Aditya Siram"
+maintainer:          "aditya.siram@gmail.com"
+copyright:           "2018 Aditya Siram"
+data-files:
+- E.txt
+description:         None
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
